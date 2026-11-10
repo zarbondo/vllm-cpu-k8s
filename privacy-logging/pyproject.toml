@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=70"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vllm-privacy-logging"
+version = "0.1.0"
+description = "vLLM plugin: request/response logging without prompts and completions"
+requires-python = ">=3.10"
+# vllm is already pinned in docker/vllm/requirements.txt, so it is not repeated here.
+dependencies = []
+
+# vLLM loads every entry point of this group in each of its processes
+# (API server, engine core, workers) before serving requests.
+[project.entry-points."vllm.general_plugins"]
+privacy_logging = "vllm_privacy_logging.plugin:register"
+
+[tool.setuptools]
+packages = ["vllm_privacy_logging"]

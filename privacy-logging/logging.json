@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "disable_existing_loggers": false,
+  "filters": {
+    "privacy": {
+      "()": "vllm_privacy_logging.filters.PrivacyFilter"
+    }
+  },
+  "formatters": {
+    "vllm": {
+      "()": "vllm.logging_utils.NewLineFormatter",
+      "fmt": "(%(vllm_process_name)s pid=%(process)d) %(levelname)s %(asctime)s [%(fileinfo)s:%(lineno)d] %(message)s",
+      "datefmt": "%m-%d %H:%M:%S"
+    }
+  },
+  "handlers": {
+    "console": {
+      "class": "logging.StreamHandler",
+      "formatter": "vllm",
+      "filters": ["privacy"],
+      "level": "INFO",
+      "stream": "ext://sys.stdout"
+    }
+  },
+  "loggers": {
+    "vllm": {
+      "handlers": ["console"],
+      "level": "INFO",
+      "propagate": false
+    },
+    "uvicorn": {
+      "handlers": ["console"],
+      "level": "INFO",
+      "propagate": false
+    },
+    "uvicorn.access": {
+      "handlers": ["console"],
+      "level": "INFO",
+      "propagate": false
+    }
+  },
+  "root": {
+    "handlers": ["console"],
+    "level": "WARNING"
+  }
+}

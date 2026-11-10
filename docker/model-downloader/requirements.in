@@ -1,0 +1,2 @@
+# Only dependency of the init container: Hugging Face Hub client (+ hf-xet for fast downloads).
+huggingface_hub==2.4.0

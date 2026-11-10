@@ -1,0 +1,28 @@
+# For machines with less than ~12 GiB for minikube: Qwen2.5-0.5B-Instruct,
+# 2 CPU cores and 6 GiB of RAM. Built on top of the minikube overlay.
+#   kubectl apply -k k8s/overlays/minikube-small
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: llm
+
+resources:
+  - ../minikube
+
+configMapGenerator:
+  - name: vllm-env
+    behavior: merge
+    literals:
+      - MODEL_ID=Qwen/Qwen2.5-0.5B-Instruct
+      - SERVED_MODEL_NAME=qwen2.5-0.5b-instruct
+
+patches:
+  - target:
+      kind: Deployment
+      name: vllm
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/resources
+        value:
+          requests: {cpu: "2", memory: 6Gi}
+          limits: {cpu: "2", memory: 6Gi}

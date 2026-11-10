@@ -1,0 +1,34 @@
+# Base: everything except the Secret, which every environment brings itself
+# (see overlays/minikube for a local one, generated from a git-ignored file).
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: llm
+
+labels:
+  - pairs:
+      app.kubernetes.io/part-of: vllm-cpu
+    includeSelectors: false
+
+resources:
+  - namespace.yaml
+  - serviceaccount.yaml
+  - pvc.yaml
+  - deployment.yaml
+  - service.yaml
+
+# Generated ConfigMaps get a content hash in their name, so any change of
+# the settings rolls the Deployment out automatically.
+configMapGenerator:
+  - name: vllm-env
+    envs:
+      - config/vllm.env
+  - name: vllm-serve-config
+    files:
+      - config.yaml=config/vllm-serve.yaml
+
+images:
+  - name: vllm-cpu
+    newTag: "0.32.0"
+  - name: vllm-model-downloader
+    newTag: "0.1.0"

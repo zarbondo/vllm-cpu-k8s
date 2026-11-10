@@ -1,0 +1,6 @@
+# Top-level dependency of the vLLM image. Everything else (including transitive
+# dependencies) is resolved by scripts/lock-deps.sh into requirements.txt.
+#
+# Official CPU build of vLLM 0.32.0 (x86_64, AVX512 / AVX2), published in the GitHub release.
+# It pulls torch==2.13.0+cpu from the PyTorch CPU index and triton-cpu from GitHub.
+vllm @ https://github.com/vllm-project/vllm/releases/download/v0.32.0/vllm-0.32.0+cpu-cp38-abi3-manylinux_2_39_x86_64.whl

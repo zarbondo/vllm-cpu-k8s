@@ -1,0 +1,26 @@
+# Flags of `vllm serve` (key = flag without "--"), mounted as
+# /etc/vllm/serve/config.yaml from the ConfigMap vllm-serve-config.
+# Edit and `kubectl apply -k ...`: the pod is re-created with the new settings,
+# the image is not rebuilt. The same file is baked into the image as the default.
+
+# Inference on CPU: bf16 weights, no quantization (AVX512-BF16/AMX run it natively,
+# AVX2-only CPUs emulate it).
+dtype: bfloat16
+max-model-len: 8192
+
+# Batching. max-num-seqs bounds concurrent sequences (decode throughput),
+# max-num-batched-tokens bounds the tokens of one engine step (prefill chunk size).
+max-num-seqs: 16
+max-num-batched-tokens: 2048
+enable-prefix-caching: true
+
+# KV cache size, set explicitly: without it vLLM on CPU sizes the cache from the
+# node RAM (not from the pod limit) and the pod gets OOM-killed.
+# 1 GiB = ~37k tokens for Qwen2.5-1.5B (28 layers x 2 KV heads x 128 dim x bf16).
+kv-cache-memory-bytes: 1073741824
+
+# Request logging: only the fact of a request (id, token counts, timing).
+# Prompts and outputs are removed by the vllm-privacy-logging plugin, so it is
+# safe to keep both switches on.
+enable-log-requests: true
+enable-log-outputs: true

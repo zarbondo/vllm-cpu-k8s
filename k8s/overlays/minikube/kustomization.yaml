@@ -1,0 +1,16 @@
+# Local deployment: base + a Secret generated from minikube/secrets.env.
+#   cp k8s/overlays/minikube/secrets.env.example k8s/overlays/minikube/secrets.env
+#   (or ./scripts/make-secrets.sh), then: kubectl apply -k k8s/overlays/minikube
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: llm
+
+resources:
+  - ../../base
+
+secretGenerator:
+  - name: vllm-secrets
+    type: Opaque
+    envs:
+      - secrets.env   # git-ignored

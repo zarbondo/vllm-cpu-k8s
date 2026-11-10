@@ -1,0 +1,9 @@
+# Allow-list: only what the Dockerfiles copy. Keeps secrets.env and .git out of the build context.
+*
+!docker/
+!privacy-logging/
+!scripts/download_model.py
+!k8s/base/config/vllm-serve.yaml
+privacy-logging/tests/
+**/__pycache__/
+**/*.egg-info/

@@ -1,0 +1,9 @@
+k8s/overlays/*/secrets.env
+loadtest/results/
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+*.egg-info/
+build/
+.ruff_cache/

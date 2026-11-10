@@ -1,0 +1,5 @@
+# Tests and load test on the host (the privacy-logging tests need vLLM: run them with `make test-image`)
+pytest==9.2.0
+pyyaml==6.0.3
+aiohttp==3.14.5
+huggingface_hub==2.4.0

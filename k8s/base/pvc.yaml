@@ -1,0 +1,13 @@
+# Model weights cache. Filled once by the model-downloader init container,
+# then every start or restart of the pod loads the model from here, offline.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: vllm-models
+spec:
+  accessModes:
+    - ReadWriteOnce
+  # no storageClassName: the cluster default is used (minikube: "standard")
+  resources:
+    requests:
+      storage: 10Gi
